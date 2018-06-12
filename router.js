@@ -21,6 +21,7 @@ var templateString = fs.readFileSync('./views/docs.ejs', 'utf-8');
 module.exports = (app) => {
 
     app.get('/', function(req, res) {
+
         res.send(ejs.render(templateString));
     })
     app.post('/signin', useBodyParser, requireSignin, Authentication.signin)
