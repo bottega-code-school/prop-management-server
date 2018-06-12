@@ -12,12 +12,16 @@ const requireSignin = passport.authenticate('local', { session: false })
 const bodyParser = require('body-parser');
 const useBodyParser = bodyParser.json({ type: '*/*'});
 
+const ejs = require('ejs');
+var templateString = null;
+var fs = require('fs');
+var templateString = fs.readFileSync('./views/docs.ejs', 'utf-8');
 // const fs = require('fs');
 
 module.exports = (app) => {
 
-    app.get('/', requireAuth, function(req, res) {
-        res.send({ hi: 'there' })
+    app.get('/', function(req, res) {
+        res.send(ejs.render(templateString));
     })
     app.post('/signin', useBodyParser, requireSignin, Authentication.signin)
     app.post('/signup', useBodyParser, Authentication.signup)
