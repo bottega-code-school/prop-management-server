@@ -72,10 +72,22 @@ module.exports = (app) => {
 
     app.post('/requests/update-status', useBodyParser, function(req, res) {
         const id = req.body._id;
-        // if you are having problems here. check the id.
         Request.findOne({ _id: id}, function(err, request) {
             if(err) { res.send(err) }
-            request.status = req.body.newStatus;
+            const oldStatus = request.status;
+            let newStatus = 'in-progress';
+            switch(req.body.status){
+              case 'pending':
+                newStatus = 'in-progress';
+                break;
+              case 'in-progress':
+                newStatus = 'complete';
+                break;
+              case 'complete':
+                newStatus = 'pending';
+                break;
+            }
+            request.status = newStatus;
             request.save();
             res.send({
                 success: true,
@@ -85,7 +97,7 @@ module.exports = (app) => {
     })
 
     app.post('/requests/new', function(req, res) {
-        
+
         const title = req.body.title;
         const body = req.body.body;
         const date = new Date(); // creation date
@@ -109,4 +121,3 @@ module.exports = (app) => {
         })
     })
 }
-
