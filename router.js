@@ -71,7 +71,8 @@ module.exports = (app) => {
 
 
     app.post('/requests/update-status', useBodyParser, function(req, res) {
-        const id = req.body.id;
+        const id = req.body._id;
+        // if you are having problems here. check the id.
         Request.findOne({ _id: id}, function(err, request) {
             if(err) { res.send(err) }
             request.status = req.body.newStatus;
