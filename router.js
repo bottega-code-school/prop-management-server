@@ -45,7 +45,7 @@ module.exports = (app) => {
         })
     })
 
-    app.post('/newsletter/new', function(req,res){
+    app.post('/newsletters/new', function(req,res){
 
         var newNewsletter = new Newsletter();
         newNewsletter.title = req.body.title;
