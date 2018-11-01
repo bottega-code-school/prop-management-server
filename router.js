@@ -60,6 +60,28 @@ module.exports = (app) => {
             // data: fs.readFileSync(target_path, 'base64')
         })
     });
+    
+    app.post('/newsletters/edit/:id', function (req, res) {
+        const id = req.params.id;
+        Newsletter.findOne({ _id: id }, function (err, newsletter) {
+            if (err) { return res.send(err); }
+            newsletter.title = req.body.title;
+            newsletter.body = req.body.body;
+            newsletter.date = new Date();
+            if(!req.body.image){
+                newsletter.imageUrl = req.file.filename;
+            }
+
+            newsletter.save(); 
+
+            res.send({
+                success: true,
+                message: 'saved newsletter'
+                // data: fs.readFileSync(target_path, 'base64')
+            })
+        });
+
+    });
 
     // Requests
 
